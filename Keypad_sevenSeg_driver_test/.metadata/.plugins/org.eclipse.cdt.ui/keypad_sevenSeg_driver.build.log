@@ -1,0 +1,33 @@
+18:10:36 **** Incremental Build of configuration Debug for project keypad_sevenSeg_driver ****
+make all 
+Building target: keypad_sevenSeg_driver.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,keypad_sevenSeg_driver.map -mmcu=atmega32 -o "keypad_sevenSeg_driver.elf"  ./Keypad_test.o ./gpio.o ./keypad.o ./seven_segment.o   
+Finished building target: keypad_sevenSeg_driver.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S keypad_sevenSeg_driver.elf  >"keypad_sevenSeg_driver.lss"
+Finished building: keypad_sevenSeg_driver.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex keypad_sevenSeg_driver.elf  "keypad_sevenSeg_driver.hex"
+Finished building: keypad_sevenSeg_driver.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 keypad_sevenSeg_driver.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    2124 bytes (6.5% Full)
+(.text + .data + .bootloader)
+
+Data:          0 bytes (0.0% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+18:10:36 Build Finished. 0 errors, 0 warnings. (took 407ms)
+

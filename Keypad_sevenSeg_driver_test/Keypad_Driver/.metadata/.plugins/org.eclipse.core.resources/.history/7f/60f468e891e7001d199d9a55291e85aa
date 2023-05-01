@@ -1,0 +1,22 @@
+/****************************************************************************
+ * Module     : KEYPAD
+ * File Name  : keypad.h
+ * Description: header file to include public prototypes and MACROS
+ * Author     : Sarah
+ *************************************************************************/
+
+#ifndef KEYPAD_H_
+#define KEYPAD_H_
+
+
+/******************************************************************
+ * Function Prototypes
+ *
+ ******************************************************************/
+
+
+
+
+
+
+#endif /* KEYPAD_H_ */

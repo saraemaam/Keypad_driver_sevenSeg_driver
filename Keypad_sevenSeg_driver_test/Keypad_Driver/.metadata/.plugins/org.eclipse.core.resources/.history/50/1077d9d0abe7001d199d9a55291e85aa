@@ -1,0 +1,176 @@
+/****************************************************************************
+ * Module     : KEYPAD
+ * File Name  : keypad.c
+ * Description: Keypad driver to implement simple and configurable driver to
+ *              work with both modes 4*4 and 4*3 mode
+ *  Author    : Sarah
+ *************************************************************************/
+
+#include"keypad.h"
+#include"gpio.h"
+
+/****************************************************************
+ *                    Private Function Prototypes
+ ***************************************************************/
+
+/* Private Functions only used internal and it's not allowed to be called by the user
+ * it is for adjusting the keypad button if its 3x4 or 4X4 ONLY IF it is not standard */
+
+
+#ifndef STANDARD_KEYPAD
+
+#if KEYPAD_NUM_COLS == 3
+/*Function responsible for mapping the switch number in the keypad to
+ * its corresponding functional number in the 4x3 keypad*/
+uint8 static KEYPAD_4x3_adjustKeyNumber(uint8 Button_number);
+
+#elif KEYPAD_NUM_COLS == 4
+
+/*Function responsible for mapping the switch number in the keypad to
+ * its corresponding functional number in the for 4x4 keypad
+ */
+
+uint8 static KEYPAD_4x4_adjustKeyNumber(uint8 Button_number);
+
+#endif
+
+#endif
+
+/*Description :
+ * Function to know which key is pressed
+ *
+ * */
+uint8 KEYPAD_getPressedKey(void)
+{
+	uint8 row,col;
+
+	GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID,   PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+1, PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+2,   PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+3,   PIN_INPUT);
+
+	GPIO_setupDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID, PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID, PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID, PIN_INPUT);
+
+#if (KEYPAD_NUM_COLS == 4)
+	GPIO_setupDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID, PIN_INPUT);
+#endif
+
+	while(1)
+	{
+
+		for(row = 0; row < KEYPAD_NUM_ROWS; row++)
+		{
+			GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+row, PORT_OUTPUT);
+			GPIO_writePin(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+row, KEYPAD_PRESSED);
+
+			/* scan the columns pins output */
+
+			for (col=0 ; col < KEYPAD_NUM_COLS; col++) /* Scan columns*/
+			{
+
+				if (GPIO_readPin(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID+col) == KEYPAD_PRESSED)
+				{
+
+#if (KEYPAD_NUM_COLS == 3)
+#ifdef KEYPAD_STANDARD
+					return (row*KEYPAD_NUM_COLS+col+1);
+#else
+					return KEYPAD_4x3_adjustKeyNumber((row*KEYPAD_NUM_COLS)+col+1);
+#endif
+
+
+#elif (KEYPAD_NUM_COLS == 4)
+#ifdef KEYPAD_STANDARD
+					return (row*KEYPAD_NUM_COLS+col+1);
+#else
+					return KEYPAD_4x4_adjustKeyNumber((row*KEYPAD_NUM_COLS)+col+1);
+#endif
+#endif
+
+				}
+			}
+
+			GPIO_setupDirection(KEYPAD_ROW_PORT_ID,KEYPAD_FIRST_ROW_PIN_ID+row,PIN_INPUT);
+		}
+	}
+}
+
+#ifndef STANDARD_KEYPAD
+
+#if KEYPAD_NUM_COLS == 3
+
+uint8 static KEYPAD_4x3_adjustKeyNumber(uint8 Button_number)
+				{
+	uint8 keypad_Button = 0;
+
+	switch(Button_number)
+	{
+
+	case 10: keypad_Button = '*';
+	break;
+	case 11: keypad_Button ='0';
+	break;
+	case 12: keypad_Button ='#';
+	break;
+	default: keypad_Button = Button_number;
+	break;
+
+	}
+
+	return keypad_Button;
+
+				}
+
+#elif KEYPAD_NUM_COLS == 4
+
+uint8 static KEYPAD_4x4_adjustKeyNumber(uint8 Button_number){
+
+	uint8 keypad_Button = 0;
+
+	switch(Button_number)
+	{
+
+	case 1: keypad_button = 7;
+	break;
+	case 2: keypad_button = 8;
+	break;
+	case 3: keypad_button = 9;
+	break;
+	case 4: keypad_button = '%'; // ASCII Code of %
+	break;
+	case 5: keypad_button = 4;
+	break;
+	case 6: keypad_button = 5;
+	break;
+	case 7: keypad_button = 6;
+	break;
+	case 8: keypad_button = '*'; /* ASCII Code of '*' */
+	break;
+	case 9: keypad_button = 1;
+	break;
+	case 10: keypad_button = 2;
+	break;
+	case 11: keypad_button = 3;
+	break;
+	case 12: keypad_button = '-'; /* ASCII Code of '-' */
+	break;
+	case 13: keypad_button = 13;  /* ASCII of Enter */
+	break;
+	case 14: keypad_button = 0;
+	break;
+	case 15: keypad_button = '='; /* ASCII Code of '=' */
+	break;
+	case 16: keypad_button = '+'; /* ASCII Code of '+' */
+	break;
+	default: keypad_button = button_number;
+	break;
+	}
+
+	return keypad_Button;
+
+}
+#endif
+
+#endif

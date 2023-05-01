@@ -1,0 +1,108 @@
+/****************************************************************************
+ * Module     : KEYPAD
+ * File Name  : keypad.c
+ * Description: Keypad driver to implement simple and configurable driver to
+ *              work with both modes 4*4 and 4*3 mode
+ *  Author    : Sarah
+ *************************************************************************/
+
+#include"keypad.h"
+#include"gpio.h"
+
+/****************************************************************
+ *                    Private Function Prototypes
+ ***************************************************************/
+
+#ifndef STANDARD_KEYPAD
+
+#if KEYPAD_NUM_COLS == 3
+
+uint8 static KEYPAD_4x3_adjustKeyNumber(void);
+
+#elif KEYPAD_NUM_COLS == 4
+
+uint8 static KEYPAD_4x4_adjustKeyNumber(void);
+
+#endif
+
+#endif
+
+uint8 KEYPAD_getPressedKey(void)
+{
+	uint8 row,col;
+
+	GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID,   PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+1, PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+2,   PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+3,   PIN_INPUT);
+
+	GPIO_setupDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID, PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID, PIN_INPUT);
+	GPIO_setupDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID, PIN_INPUT);
+
+#if (KEYPAD_NUM_COLS == 4)
+	GPIO_setupDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID, PIN_INPUT);
+#endif
+
+	while(1)
+	{
+
+		for(row = 0; row < KEYPAD_NUM_ROWS; row++)
+		{
+			GPIO_setupDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+row, PORT_OUTPUT);
+			GPIO_writePin(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+row, KEYPAD_PRESSED);
+
+			/* scan the columns pins output */
+
+			for (col=0 ; col < KEYPAD_NUM_COLS; col++) /* Scan columns*/
+			{
+
+				if (GPIO_readPin(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID+col) == KEYPAD_PRESSED)
+				{
+
+#if
+
+
+
+
+
+				}
+
+
+			}
+
+
+
+
+
+
+
+
+		}
+
+
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+	for ( row = 0; row < KEYPAD_NUM_ROWS; row++)
+
+	{
+
+
+	}
+
+
+
+
+
+}

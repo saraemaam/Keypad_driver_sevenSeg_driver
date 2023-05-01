@@ -1,0 +1,62 @@
+/****************************************************************************
+ * Module     : KEYPAD
+ * File Name  : keypad.c
+ * Description: Keypad driver to implement simple and configurable driver to
+ *              work with both modes 4*4 and 4*3 mode
+ *  Author    : Sarah
+ *************************************************************************/
+
+#include"keypad.h"
+#include"gpio.h"
+
+/****************************************************************
+ *                    Private Function Prototypes
+ ***************************************************************/
+
+#ifndef STANDARD_KEYPAD
+
+#if KEYPAD_NUM_COLS == 3
+
+uint8 static KEYPAD_4x3_adjustKeyNumber(void);
+
+#elif KEYPAD_NUM_COLS == 4
+
+uint8 static KEYPAD_4x4_adjustKeyNumber(void);
+
+#endif
+
+#endif /* */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+uint8 KEYPAD_getPressedKey(void){
+
+
+
+
+
+
+}
+
+
+
+
+

@@ -1,0 +1,182 @@
+/****************************************************************
+ * Module      :seven Segment
+ * File name   :seven_segment.c
+ * Description : Seven segment driver configurable
+ * Author      : Sarah
+ ****************************************************************/
+
+/****************************************************************
+ *                             Function Definition
+ ***************************************************************/
+
+#include "seven_segment.h"
+#include "gpio.h"
+
+void SevenSegment_Init (void)
+{
+
+#ifndef SEVEN_SEGMENT_DECODER
+
+	/* if decoder is not connected will include this defines*/
+
+	/* configure pin 6 in PORTC as output pin*/
+	GPIO_setupPinDirection(PORTA_ID, SEVEN_SEG1_2_A_PIN, PIN_OUTPUT);
+	GPIO_setupPinDirection(PORTA_ID, SEVEN_SEG1_2_B_PIN, PIN_OUTPUT);
+	GPIO_setupPinDirection(PORTA_ID, SEVEN_SEG1_2_C_PIN, PIN_OUTPUT);
+	GPIO_setupPinDirection(PORTA_ID, SEVEN_SEG1_2_D_PIN, PIN_OUTPUT);
+	GPIO_setupPinDirection(PORTA_ID, SEVEN_SEG1_2_E_PIN, PIN_OUTPUT);
+	GPIO_setupPinDirection(PORTA_ID, SEVEN_SEG1_2_F_PIN, PIN_OUTPUT);
+	GPIO_setupPinDirection(PORTA_ID, SEVEN_SEG1_2_G_PIN, PIN_OUTPUT);
+
+	// Set pin 6 in PORTC with value 1 to enable the BJT NPN transistor to connect the first 7-segment common to the ground(common cathode)
+	GPIO_writePin(PORTC_ID, PIN6_ID, LOGIC_HIGH);
+
+
+#else
+
+	/* Set direction of 4 pins connected to decoder to be output pins*/
+
+	GPIO_setupPinDirection(SEVEN_SEGMENT_USING_DECODER_PORT, SEVEN_SEGMENT_USING_DECODER_PIN0, PIN_OUTPUT);
+	GPIO_setupPinDirection(SEVEN_SEGMENT_USING_DECODER_PORT, SEVEN_SEGMENT_USING_DECODER_PIN1, PIN_OUTPUT);
+	GPIO_setupPinDirection(SEVEN_SEGMENT_USING_DECODER_PORT, SEVEN_SEGMENT_USING_DECODER_PIN2, PIN_OUTPUT);
+	GPIO_setupPinDirection(SEVEN_SEGMENT_USING_DECODER_PORT, SEVEN_SEGMENT_USING_DECODER_PIN3, PIN_OUTPUT);
+
+	// initialize the 7-segment with value 0 by clear the first four bits in PORTC
+	GPIO_writePin(SEVEN_SEGMENT_USING_DECODER_PORT, SEVEN_SEGMENT_USING_DECODER_PIN0, LOGIC_LOW);
+	GPIO_writePin(SEVEN_SEGMENT_USING_DECODER_PORT, SEVEN_SEGMENT_USING_DECODER_PIN1, LOGIC_LOW);
+	GPIO_writePin(SEVEN_SEGMENT_USING_DECODER_PORT, SEVEN_SEGMENT_USING_DECODER_PIN2, LOGIC_LOW);
+	GPIO_writePin(SEVEN_SEGMENT_USING_DECODER_PORT, SEVEN_SEGMENT_USING_DECODER_PIN3, LOGIC_LOW);
+
+#endif
+
+
+}
+
+
+void SevenSegment_Display(uint8 value)
+{
+
+#ifndef SEVEN_SEGMENT_DECODER
+
+	switch(value)
+	{
+
+	case 0:
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_LOW);
+
+		break;
+	case 1:
+
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_LOW);
+
+		break;
+	case 2:
+
+
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_HIGH);
+
+		break;
+	case 3:
+
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_HIGH);
+
+		break;
+	case 4:
+
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_HIGH);
+
+		break;
+
+	case 5:
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_HIGH);
+		break;
+
+	case 6:
+
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_HIGH);
+		break;
+	case 7:
+
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_LOW);
+		break;
+	case 8:
+
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_HIGH);
+		break;
+	case 9:
+
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_A_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_B_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_C_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_D_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_E_PIN, LOGIC_LOW);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_F_PIN, LOGIC_HIGH);
+		GPIO_writePin(PORTA_ID, SEVEN_SEG1_2_G_PIN, LOGIC_HIGH);
+		break;
+	}
+
+#else
+
+	GPIO_writePort(SEVEN_SEGMENT_USING_DECODER_PORT,value);
+
+
+
+
+
+#endif
+
+}

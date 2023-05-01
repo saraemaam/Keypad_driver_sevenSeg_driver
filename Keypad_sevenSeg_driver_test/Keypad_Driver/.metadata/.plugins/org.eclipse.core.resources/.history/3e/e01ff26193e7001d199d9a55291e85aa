@@ -1,0 +1,9 @@
+/****************************************************************************
+ * Module     : KEYPAD
+ * File Name  : keypad.c
+ * Description: Keypad driver to implement simple and configurable driver to
+ *              work with both modes 4*4 and 4*3 mode
+ *  Author    : Sarah
+ *************************************************************************/
+
+
